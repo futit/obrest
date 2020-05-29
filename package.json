@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "typescript": "^3.9.3"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "axios": "^0.19.2"
+  }
+}
