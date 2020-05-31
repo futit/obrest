@@ -1,8 +1,27 @@
 {
+  "name": "obrest",
+  "version": "1.0.0",
+  "description": "Libary to connect js apps with openbravo",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/androettop/obrest/"
+  },
+  "keywords": ["api","rest","openbravo"],
+  "author": "Pablo Androetto",
+  "license": "GNU",
+  "homepage": "https://github.com/androettop/",
+  "files": [
+    "lib/**/*"
+  ],
   "devDependencies": {
+    "@types/jest": "^25.2.3",
+    "jest": "^26.0.1",
+    "ts-jest": "^26.0.0",
     "typescript": "^3.9.3"
   },
   "scripts": {
+    "test": "jest --config jestconfig.json",
     "build": "tsc"
   },
   "dependencies": {

@@ -64,6 +64,7 @@ export default class OBCriteria {
         this._orderBy += property;
     }
 
+
     list(): Array<Object> {
         const results = Array<Object>();
         OBRest.getInstance().getAxios().request({

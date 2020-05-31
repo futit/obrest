@@ -1,3 +1,6 @@
+/**
+ * Equivalent to OBContext in openbravo
+ */
 export default class OBContext {
     private organizationId: string;
     private roleId: string;
@@ -11,7 +14,9 @@ export default class OBContext {
         this. warehouseId = warehouseId;
     }
 
+    /** Creates a context with the jwtToken information */
     static byJwtToken(jwtToken: string): OBContext {
+        //TODO: mejorar esto
         let jwtData = JSON.parse(atob(jwtToken.split(".")[1]));
         return new OBContext(jwtData.organizationId, jwtData.roleId, jwtData.clientId, jwtData.warehouseId);
     }
