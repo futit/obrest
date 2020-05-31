@@ -2,7 +2,7 @@
   "name": "obrest",
   "version": "1.0.0",
   "description": "Libary to connect js apps with openbravo",
-  "main": "index.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/androettop/obrest/"

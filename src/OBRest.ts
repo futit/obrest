@@ -16,7 +16,7 @@ export default class OBRest {
 
     private constructor(url:URL,jwtToken:string){
         this.axios = Axios.create({
-            baseURL: url.host,
+            baseURL: url.href,
             headers: {
                 Authorization: `Bearer ${jwtToken}`
             }
