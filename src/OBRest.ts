@@ -29,9 +29,10 @@ export default class OBRest {
     }
 
     /** Save a single record */
-    public async save(object: OBObject):Promise<Array<OBObject> | OBObject | undefined> {
+    public async save(object: OBObject):Promise<OBObject | undefined> {
         if(object._entityName){
-            return this._save(object._entityName,object);
+            let result = await this._save(object._entityName,object);
+            return result != undefined ? result[0] : undefined;
         }
     }
 
@@ -42,12 +43,12 @@ export default class OBRest {
         }
     }
 
-    private async _save(entityName:string,data:object):Promise<Array<OBObject> | OBObject | undefined> {
+    private async _save(entityName:string,data:object):Promise<Array<OBObject> | undefined> {
         const response = (await this.axios.request({
             method:'POST',
-            url: `"com.smf.securewebservices.jsonDal/${entityName}`,
-            data            
-        })).data;
+            url: `com.smf.securewebservices.jsonDal/${entityName}`,
+            data:{data}
+        }));
         if(response.data){
             if(response.data.response.status === 0){
                 return response.data.response.data;

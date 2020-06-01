@@ -90,7 +90,7 @@ export default class OBCriteria {
                 sortBy: this._orderBy,
                 firstResult: this._firstResult,
                 maxResults: this._maxResults,
-                criteria: this._restrictions[0],
+                criteria: this._restrictions.map(e=>JSON.stringify(e)).join(','),
                 _where: this._where,
                 where: this._where,
             }
