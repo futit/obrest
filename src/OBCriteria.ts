@@ -1,7 +1,6 @@
 import OBRest from './OBRest';
 import { AxiosInstance } from 'axios';
-import OBContext from './OBContext';
-import Criterion from './Criterion';
+import { OBObject, Criterion, OBContext } from '.';
 
 /**
  * OBCriteria class, equivalent to the criteria class in Openbravo.
@@ -35,7 +34,7 @@ export default class OBCriteria {
     private _where: string;
 
 
-    constructor(axios:AxiosInstance,restWsName:string, entityName: string) {
+    constructor(axios: AxiosInstance, restWsName: string, entityName: string) {
         this._axios = axios;
         this._restWsName = restWsName;
         this._entityName = entityName;
@@ -48,19 +47,19 @@ export default class OBCriteria {
     }
 
     /** Sets the max results */
-    setMaxResults(maxResults: number){
+    setMaxResults(maxResults: number) {
         this._maxResults = maxResults;
     }
 
     /**
      * @deprecated
      */
-    setWhere(hqlWhere: string){
+    setWhere(hqlWhere: string) {
         this._where = hqlWhere;
     }
 
     /** Sets the first result */
-    setFirstResult(firstResult: number){
+    setFirstResult(firstResult: number) {
         this._firstResult = firstResult;
     }
 
@@ -71,10 +70,10 @@ export default class OBCriteria {
 
     /** Add order by to the criteria */
     addOrderBy(property: string, ascending: boolean) {
-        if (this._orderBy.length > 0){
+        if (this._orderBy.length > 0) {
             this._orderBy += ", ";
         }
-        if (!ascending){
+        if (!ascending) {
             this._orderBy += "-";
         }
         this._orderBy += property;
@@ -82,33 +81,38 @@ export default class OBCriteria {
 
 
 
-    list(): Array<Object> {
-        const results = Array<Object>();
-        OBRest.getInstance().getAxios().request({
-            url:`${this._restWsName}/${this._entityName}`,
-            method:'GET',
+    async list(): Promise<Array<OBObject>> {
+        const request = (await OBRest.getInstance().getAxios().request({
+            url: `${this._restWsName}/${this._entityName}`,
+            method: 'GET',
             //TODO: add support for this params in java... in a new correct ws?
-            params:{
-                sortBy:this._orderBy,
-                firstResult:this._firstResult,
-                maxResults:this._maxResults,
-                criteria: this._restrictions,
+            params: {
+                sortBy: this._orderBy,
+                firstResult: this._firstResult,
+                maxResults: this._maxResults,
+                criteria: this._restrictions[0],
                 _where: this._where,
-                where:this._where,
+                where: this._where,
             }
-        });
+        }));
+
+        if(request.data.response && request.data.response.data){
+            return request.data.response.data;
+        }else{
+            //TODO: error?
+            return new Array<OBObject>();
+        }
         /*
         Execute request and add results if exists.
         */
-        return results;
     }
 
-    uniqueResult(): Object | undefined {
+    async uniqueResult(): Promise<OBObject | undefined> {
         this.setMaxResults(1);
-        let resultLst = this.list();
-        if( resultLst.length > 0){
+        let resultLst = await this.list();
+        if (resultLst.length > 0) {
             return resultLst[0];
-        }else{
+        } else {
             return undefined;
         }
     }

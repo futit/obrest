@@ -4,6 +4,7 @@ import OBCriteria from './OBCriteria';
 import OBRest from './OBRest';
 import OBRestConfig from './OBRestConfig';
 import Restrictions from './Restrictions';
+import OBObject from './OBObject';
 
 export {
     Criterion,
@@ -11,5 +12,6 @@ export {
     OBCriteria,
     OBRest,
     OBRestConfig,
-    Restrictions
+    Restrictions,
+    OBObject
 }
