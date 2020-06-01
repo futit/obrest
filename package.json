@@ -1,6 +1,6 @@
 {
   "name": "obrest",
-  "version": "1.0.13",
+  "version": "0.0.18",
   "description": "Libary to connect js apps with openbravo",
   "main": "lib/index.js",
   "repository": {
