@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/androettop/obrest/"
+    "url": "git+https://github.com/futit/obrest/"
   },
   "keywords": [
     "api",
@@ -14,7 +14,7 @@
   ],
   "author": "Pablo Androetto",
   "license": "GNU",
-  "homepage": "https://github.com/androettop/",
+  "homepage": "https://github.com/futit/",
   "files": [
     "lib/**/*"
   ],
