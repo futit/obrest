@@ -28,6 +28,13 @@ export default class OBCriteria {
     /** Order by string parameter */
     private _orderBy: string;
 
+    /** 
+     * @deprecated
+     * Hql where  parameter
+     * */
+    private _where: string;
+
+
     constructor(axios:AxiosInstance,restWsName:string, entityName: string) {
         this._axios = axios;
         this._restWsName = restWsName;
@@ -36,16 +43,25 @@ export default class OBCriteria {
         this._maxResults = 1000000;
         this._firstResult = 0;
         this._orderBy = "";
+        this._where = "";
+
     }
 
     /** Sets the max results */
     setMaxResults(maxResults: number){
-        return this._maxResults = maxResults;
+        this._maxResults = maxResults;
+    }
+
+    /**
+     * @deprecated
+     */
+    setWhere(hqlWhere: string){
+        this._where = hqlWhere;
     }
 
     /** Sets the first result */
     setFirstResult(firstResult: number){
-        return this._firstResult = firstResult;
+        this._firstResult = firstResult;
     }
 
     /** Add a restriction to the criteria, you must use the Restrictions methods */
@@ -65,10 +81,11 @@ export default class OBCriteria {
     }
 
 
+
     list(): Array<Object> {
         const results = Array<Object>();
         OBRest.getInstance().getAxios().request({
-            url:this._restWsName,
+            url:`${this._restWsName}/${this._entityName}`,
             method:'GET',
             //TODO: add support for this params in java... in a new correct ws?
             params:{
@@ -76,6 +93,8 @@ export default class OBCriteria {
                 firstResult:this._firstResult,
                 maxResults:this._maxResults,
                 criteria: this._restrictions,
+                _where: this._where,
+                where:this._where,
             }
         });
         /*
