@@ -44,6 +44,7 @@ export default class OBRest {
 
     private async _save(entityName:string,data:object):Promise<Array<OBObject> | OBObject | undefined> {
         const response = (await this.axios.request({
+            method:'POST',
             url: `"com.smf.securewebservices.jsonDal"/${entityName}`,
             data            
         })).data;
