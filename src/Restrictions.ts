@@ -2,7 +2,19 @@ import Criterion from "./Criterion"
 
 export default class Restrictions{
 
-    static eq(property: string, value: string):Criterion{
+    public static and(criterias: Array<Criterion>):Criterion{
+        return {
+            operator: 'and',
+            criteria:criterias
+        }
+    }
+    public static or(criterias: Array<Criterion>):Criterion{
+        return {
+            operator: 'or',
+            criteria:criterias
+        }
+    }
+    public static eq(property: string, value: string):Criterion{
         return {
             fieldName: property,
             operator: 'equals',
@@ -10,7 +22,24 @@ export default class Restrictions{
         }
     }
 
-    static ne(property: string, value: string):Criterion{
+    public static contains(property: string, value: string):Criterion{
+        return {
+            fieldName: property,
+            operator: 'contains',
+            value
+        }
+    }
+
+    
+    public static iContains(property: string, value: string):Criterion{
+        return {
+            fieldName: property,
+            operator: 'iContains',
+            value
+        }
+    }
+
+    public static ne(property: string, value: string):Criterion{
         return {
             fieldName: property,
             operator: 'iNotEqual',
@@ -18,7 +47,7 @@ export default class Restrictions{
         }
     }
     
-    static ge(property: string, value: string):Criterion{
+    public static ge(property: string, value: string):Criterion{
         return {
             fieldName: property,
             operator: 'greaterOrEqual',
@@ -26,24 +55,11 @@ export default class Restrictions{
         }
     }
 
-    static le(property: string, value: string):Criterion{
+    public static le(property: string, value: string):Criterion{
         return {
             fieldName: property,
             operator: 'lessOrEqual',
             value
-        }
-    }
-
-    static isNotNull(property: string):Criterion{
-        return {
-            fieldName: property,
-            operator: 'notNull',
-        }
-    }
-    static isNull(property: string):Criterion{
-        return {
-            fieldName: property,
-            operator: 'isNull',
         }
     }
 }

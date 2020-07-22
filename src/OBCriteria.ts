@@ -1,6 +1,7 @@
 import OBRest from './OBRest';
 import { AxiosInstance } from 'axios';
-import { OBObject, Criterion, OBContext } from '.';
+import { OBObject, Criterion, OBContext, Restrictions } from '.';
+import OBRestUtils from './OBRestUtils';
 
 /**
  * OBCriteria class, equivalent to the criteria class in Openbravo.
@@ -31,7 +32,7 @@ export default class OBCriteria {
      * @deprecated
      * Hql where  parameter
      * */
-    private _where: string;
+    private _query: string;
 
 
     constructor(axios: AxiosInstance, restWsName: string, entityName: string) {
@@ -42,7 +43,7 @@ export default class OBCriteria {
         this._maxResults = 1000000;
         this._firstResult = 0;
         this._orderBy = "";
-        this._where = "";
+        this._query = "";
 
     }
 
@@ -51,11 +52,10 @@ export default class OBCriteria {
         this._maxResults = maxResults;
     }
 
-    /**
-     * @deprecated
-     */
-    setWhere(hqlWhere: string) {
-        this._where = hqlWhere;
+    /** WARNING: This method empties the _restrictions object */
+    setQuery(rsqlQuery: string) {
+        this._query = rsqlQuery;
+        this._restrictions = new Array<Criterion>();
     }
 
     /** Sets the first result */
@@ -63,9 +63,13 @@ export default class OBCriteria {
         this._firstResult = firstResult;
     }
 
-    /** Add a restriction to the criteria, you must use the Restrictions methods */
+    /** 
+     * Add a restriction to the criteria, you must use the Restrictions methods,
+     * WARNING: This method reset the _query object 
+     */
     add(restriction: Criterion) {
         this._restrictions.push(restriction);
+        this._query = OBRestUtils.criteriaToRsql(Restrictions.and(this._restrictions));
     }
 
     /** Add order by to the criteria */
@@ -90,9 +94,7 @@ export default class OBCriteria {
                 sortBy: this._orderBy,
                 firstResult: this._firstResult,
                 maxResults: this._maxResults,
-                criteria: this._restrictions.map(e=>JSON.stringify(e)).join(','),
-                _where: this._where,
-                where: this._where,
+                q: this._query,
             }
         }));
 
