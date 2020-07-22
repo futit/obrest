@@ -1,6 +1,13 @@
 import { OBRest, Restrictions, Criterion, OBCriteria, OBObject, OBContext } from '../index';
 import OBRestUtils from '../OBRestUtils';
 
+/**
+ * TODO: hacer tests con todas las operaciones y restricciones de criteria.
+ * Si se lanza una nueva version del modulo de securewebservices se deben
+ * correr los tests para saber si la libería sigue siendo compatible con
+ * el modulo o si deben hacerse correcciones.
+ */
+
 async function getDataWithCriteria(): Promise<Number> {
     // initialize api connector
     OBRest.init(new URL("http://localhost:8080/openbravo/"));
@@ -15,7 +22,7 @@ async function getDataWithCriteria(): Promise<Number> {
         criteria.setFirstResult(2); //offset
         criteria.addOrderBy("name", false);
         criteria.add(Restrictions.or([
-            Restrictions.eq("organization", context.getOrganizationId()),
+            Restrictions.equals("organization", context.getOrganizationId()),
             Restrictions.iContains("name", "cerveza"),
         ]));
         let productList = await criteria.list();
@@ -48,10 +55,10 @@ async function getDataWithQuery(): Promise<OBObject | undefined> {
 
 function parseTest(): string {
     let restriction = Restrictions.and([
-        Restrictions.eq("name", "Openbravo test"),
+        Restrictions.equals("name", "Openbravo test"),
         Restrictions.or([
-            Restrictions.ge("age", "15"),
-            Restrictions.le("created", "2020-02-03")
+            Restrictions.greaterOrEqual("age", "15"),
+            Restrictions.lessOrEqual("created", "2020-02-03")
         ])
     ]);
     let query = OBRestUtils.criteriaToRsql(restriction);
@@ -92,3 +99,6 @@ test('changecontext', async () => {
 test('getobcontext', async () => {
     expect(await getDataWithQuery()).toBeTruthy();
 });
+
+
+
