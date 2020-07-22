@@ -71,6 +71,94 @@
 					<h2>Documentation</h2>
 				</a>
 				<p>You can see the <a href="https://futit.github.io/obrest">documentation here</a></p>
+				<a href="#examples" id="examples" style="color: inherit; text-decoration: none;">
+					<h2>Examples</h2>
+				</a>
+				<a href="#initialize-app" id="initialize-app" style="color: inherit; text-decoration: none;">
+					<h3>Initialize app</h3>
+				</a>
+				<pre><code class="language-jsx"><span class="hljs-keyword">import</span> OBRest <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;obrest&#x27;</span>;
+
+OBRest.init(<span class="hljs-string">&quot;http://localhost:8080&quot;</span>);</code></pre>
+				<a href="#login-with-username-and-password--token" id="login-with-username-and-password--token" style="color: inherit; text-decoration: none;">
+					<h3>Login with username and password / token</h3>
+				</a>
+				<p>The app should be initialized before login</p>
+				<pre><code class="language-jsx"><span class="hljs-keyword">await</span> OBRest.loginWithUserAndPassword(<span class="hljs-string">&quot;Openbravo&quot;</span>,<span class="hljs-string">&quot;openbravo&quot;</span>); <span class="hljs-comment">//Make a request to get token</span>
+
+OBRest.loginWithToken(<span class="hljs-string">&quot;your_token&quot;</span>);  <span class="hljs-comment">//only set token</span></code></pre>
+				<a href="#create-criterias" id="create-criterias" style="color: inherit; text-decoration: none;">
+					<h3>Create criterias</h3>
+				</a>
+				<p>The user should be logged before get data.</p>
+				<pre><code class="language-jsx"><span class="hljs-keyword">let</span> criteria = OBRest.getInstance().createCriteria(<span class="hljs-string">&quot;Product&quot;</span>);
+
+criteria.add(Restriction.equals(<span class="hljs-string">&quot;name&quot;</span>,<span class="hljs-string">&quot;Cerveza Lager 0,5L&quot;</span>));
+
+<span class="hljs-comment">//make a request to get the products list</span>
+criteria.list();
+
+<span class="hljs-comment">//make a request to get only the first result</span>
+criteria.uniqueResult();</code></pre>
+				<p><em>Check the code reference for more information about Restrictions</em></p>
+				<a href="#createupdate-objects" id="createupdate-objects" style="color: inherit; text-decoration: none;">
+					<h3>Create/Update objects</h3>
+				</a>
+				<p>The user should be logged before create data.</p>
+				<pre><code class="language-jsx"><span class="hljs-keyword">let</span> myProduct = {
+    <span class="hljs-string">&quot;_entityName&quot;</span>:<span class="hljs-string">&quot;Product&quot;</span>, <span class="hljs-comment">// this field is required.</span>
+    <span class="hljs-string">&quot;searchKey&quot;</span>: <span class="hljs-string">&quot;ES/1234&quot;</span>,
+    <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Test product with OBRest.js&quot;</span>,
+    <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;This is a test product created using OBRest.js&quot;</span>,
+    <span class="hljs-string">&quot;uOM&quot;</span>: <span class="hljs-string">&quot;100&quot;</span>,
+    <span class="hljs-string">&quot;salesRepresentative&quot;</span>: <span class="hljs-string">&quot;100&quot;</span>,
+    <span class="hljs-string">&quot;summaryLevel&quot;</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-string">&quot;stocked&quot;</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-string">&quot;purchase&quot;</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-string">&quot;sale&quot;</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-string">&quot;productCategory&quot;</span>: <span class="hljs-string">&quot;DC7F246D248B4C54BFC5744D5C27704F&quot;</span>,
+    <span class="hljs-string">&quot;volume&quot;</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-string">&quot;weight&quot;</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-string">&quot;taxCategory&quot;</span>: <span class="hljs-string">&quot;E020A69A1E784DC39BE57C41D6D5DB4E&quot;</span>
+} 
+
+<span class="hljs-keyword">let</span> refreshedProduct = <span class="hljs-keyword">await</span> OBRest.getInstance().save(myProduct); <span class="hljs-comment">//this method save the object in openbravo and return a promise with the saved object.</span>
+
+
+<span class="hljs-comment">// you can save a objects list too</span>
+<span class="hljs-keyword">let</span> refreshedProductList = <span class="hljs-keyword">await</span> OBRest.getInstance().saveList([
+    myProduct
+]); <span class="hljs-comment">//this method save the objects in openbravo and return a promise with the saved list.</span></code></pre>
+				<p><em>It is always better to save lists than individual objects</em> </p>
+				<a href="#remove-objects" id="remove-objects" style="color: inherit; text-decoration: none;">
+					<h3>Remove objects</h3>
+				</a>
+				<p>The user should be logged before delete data.</p>
+				<pre><code class="language-jsx"><span class="hljs-keyword">let</span> myProduct = {
+    <span class="hljs-string">&quot;_entityName&quot;</span>:<span class="hljs-string">&quot;Product&quot;</span>, <span class="hljs-comment">// this field is required.</span>
+    <span class="hljs-string">&quot;searchKey&quot;</span>: <span class="hljs-string">&quot;ES/1234&quot;</span>,
+    <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Test product with OBRest.js&quot;</span>,
+    <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;This is a test product created using OBRest.js&quot;</span>,
+    <span class="hljs-string">&quot;uOM&quot;</span>: <span class="hljs-string">&quot;100&quot;</span>,
+    <span class="hljs-string">&quot;salesRepresentative&quot;</span>: <span class="hljs-string">&quot;100&quot;</span>,
+    <span class="hljs-string">&quot;summaryLevel&quot;</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-string">&quot;stocked&quot;</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-string">&quot;purchase&quot;</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-string">&quot;sale&quot;</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-string">&quot;productCategory&quot;</span>: <span class="hljs-string">&quot;DC7F246D248B4C54BFC5744D5C27704F&quot;</span>,
+    <span class="hljs-string">&quot;volume&quot;</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-string">&quot;weight&quot;</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-string">&quot;taxCategory&quot;</span>: <span class="hljs-string">&quot;E020A69A1E784DC39BE57C41D6D5DB4E&quot;</span>
+} 
+
+<span class="hljs-keyword">let</span> refreshedProduct = <span class="hljs-keyword">await</span> OBRest.getInstance().remove(myProduct); <span class="hljs-comment">//this method save the object in openbravo and return a promise with the saved object.</span>
+
+
+<span class="hljs-comment">// you can remove a objects list too</span>
+<span class="hljs-keyword">let</span> refreshedProductList = <span class="hljs-keyword">await</span> OBRest.getInstance().removeList([
+    myProduct
+]); <span class="hljs-comment">//this method remove the objects in openbravo and return a promise with the removed list.</span></code></pre>
+				<p><em>It is always better to remove lists than individual objects</em> </p>
 				<a href="#to-run-tests" id="to-run-tests" style="color: inherit; text-decoration: none;">
 					<h2>To run tests</h2>
 				</a>
