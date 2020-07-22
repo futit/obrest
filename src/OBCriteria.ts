@@ -30,11 +30,8 @@ export default class OBCriteria {
     /** Order by string parameter */
     private _orderBy: string;
 
-    /** 
-     * @deprecated
-     * Hql where  parameter
-     * */
-    private _query: string;
+    /** Rsql query */
+    public _query: string;
 
 
     constructor(axios: AxiosInstance, restWsName: string, entityName: string) {
@@ -100,8 +97,8 @@ export default class OBCriteria {
             }
         }));
 
-        if(request.data.response && request.data.response.data){
-            return request.data.response.data;
+        if(request.data && request.data.data){
+            return request.data.data;
         }else{
             //TODO: error?
             return new Array<OBObject>();
