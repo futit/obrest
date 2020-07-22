@@ -2,6 +2,8 @@ import Axios, { AxiosInstance } from 'axios';
 import { OBObject, OBCriteria, OBContext } from '.';
 /**
  * OBRest class, equivalent to the OBDal class in Openbravo
+ * 
+ * @author androettop
  */
 export default class OBRest {
     /** The OBRest instance contains the axios instance and the context */
@@ -17,22 +19,26 @@ export default class OBRest {
     private constructor(url: URL, jwtToken?: string) {
         // create axios instance, if token provided, login.
         this.axios = Axios.create({
-            baseURL: url.href,
+            baseURL: url.href+"/sws/",
             headers: jwtToken ? {
                 'Authorization': `Bearer ${jwtToken}`
-            } : {}
+            } : {},
+            adapter:require('axios/lib/adapters/http')
         });
+
         if (jwtToken) {
             this.context = OBContext.byJwtToken(jwtToken);
         }
 
         // create dummy event handler
-        this.eventCallback = (status) => {console.warn(`request failed (error ${status})`)};
+        this.eventCallback = (status) => {
+            console.warn(`request failed (error ${status})`)
+        };
 
         //interceptor for server errors.
         this.axios.interceptors.response.use((response) => response, (error) => {
             const { status } = error.response;
-            this.eventCallback(status);
+            this.eventCallback(error);
         })       
     }
 
@@ -85,7 +91,7 @@ export default class OBRest {
     public async setOBContext(context: OBContext) {
         this.context = context;
         // refresh token to change context (role, org, warehouse, etc)
-        let response = await OBRest.getInstance().getAxios().post("/login", {
+        let response = await OBRest.getInstance().getAxios().post("login", {
             role: context.getRoleId(),
             organization: context.getOrganizationId(),
             warehouse: context.getWarehouseId(),
@@ -105,7 +111,7 @@ export default class OBRest {
 
     /** User login with username and password */
     static async loginWithUserAndPassword(username: string, password: string) {
-        let response = await OBRest.getInstance().getAxios().post("/login", {
+        let response = await OBRest.getInstance().getAxios().post("login", {
             username: username,
             password: password,
         });
@@ -118,6 +124,7 @@ export default class OBRest {
         OBRest.getInstance().getAxios().defaults.headers = {
             'Authorization': `Bearer ${jwtToken}`
         }
+        OBRest.getInstance().context = OBContext.byJwtToken(jwtToken);
     }
 
     /** Return the initialized instance */

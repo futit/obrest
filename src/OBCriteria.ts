@@ -5,6 +5,8 @@ import OBRestUtils from './OBRestUtils';
 
 /**
  * OBCriteria class, equivalent to the criteria class in Openbravo.
+ * 
+ * @author androettop
  */
 export default class OBCriteria {
     /** The rest web service name */

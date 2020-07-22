@@ -1,10 +1,10 @@
-import { OBRest, Restrictions, Criterion, OBCriteria, OBObject } from '../index';
+import { OBRest, Restrictions, Criterion, OBCriteria, OBObject, OBContext } from '../index';
 import OBRestUtils from '../OBRestUtils';
 
 async function getDataWithCriteria(): Promise<Number> {
     // initialize api connector
     OBRest.init(new URL("http://localhost:8080/openbravo/"));
-    OBRest.loginWithUserAndPassword("Openbravo", "openbravo");
+    await OBRest.loginWithUserAndPassword("Openbravo", "openbravo");
 
     const context = OBRest.getInstance().getOBContext();
 
@@ -28,7 +28,7 @@ async function getDataWithCriteria(): Promise<Number> {
 async function getDataWithQuery(): Promise<OBObject | undefined> {
     // initialize api connector
     OBRest.init(new URL("http://localhost:8080/openbravo/"));
-    OBRest.loginWithUserAndPassword("Openbravo", "openbravo");
+    await OBRest.loginWithUserAndPassword("Openbravo", "openbravo");
 
     const context = OBRest.getInstance().getOBContext();
 
@@ -58,6 +58,25 @@ function parseTest(): string {
     return query;
 }
 
+async function changeContext(): Promise<OBContext | undefined> {
+    // initialize api connector
+    OBRest.init(new URL("http://localhost:8080/openbravo/"));
+    await OBRest.loginWithUserAndPassword("Openbravo", "openbravo");
+
+    const context = OBRest.getInstance().getOBContext();
+
+    //Si hay un contexto...
+    if (context) {
+        context.setOrganizationId("0");
+        context.setRoleId("0");
+        await OBRest.getInstance().setOBContext(context);
+        return OBRest.getInstance().getOBContext();
+    } else {
+        throw new Error("Auth error.")
+    }
+}
+
+
 test('parser', () => {
     expect(parseTest()).toBe("name == 'Openbravo test' and (age >= '15' or created <= '2020-02-03')");
 });
@@ -66,6 +85,10 @@ test('getdatacriteria', async () => {
     expect(await getDataWithCriteria()).toBeGreaterThan(0);
 });
 
-test('getdataquery', async () => {
+test('changecontext', async () => {
+    expect(await changeContext()).toBeTruthy();
+});
+
+test('getobcontext', async () => {
     expect(await getDataWithQuery()).toBeTruthy();
 });

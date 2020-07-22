@@ -1,5 +1,7 @@
 /**
  * Equivalent to OBContext in openbravo
+ * 
+ * @author androettop
  */
 export default class OBContext {
     private userId: string;
@@ -21,6 +23,18 @@ export default class OBContext {
         //TODO: mejorar esto
         let jwtData = JSON.parse(atob(jwtToken.split(".")[1]));
         return new OBContext(jwtData.user, jwtData.organization, jwtData.role, jwtData.client, jwtData.warehouse);
+    }
+
+    setOrganizationId(value: string) {
+        this.organizationId = value;
+    }
+
+    setRoleId(value: string) {
+        this.roleId = value;
+    }
+
+    setWarehouseId(value: string) {
+        this.warehouseId = value;
     }
 
     getUserId(): string {

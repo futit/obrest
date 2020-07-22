@@ -1,5 +1,9 @@
 import { Criterion } from ".";
-
+/** 
+ * RSQL Utilities 
+ * 
+ * @author androettop
+ */
 export default class OBRestUtils {
     public static operators = [
         { "symbol": "!=", "name": "notEqual" },
