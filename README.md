@@ -2,7 +2,35 @@
 
 ## Documentation
 
-You can see the [documentation here](https://futit.github.io/obrest)
+You can see the [code reference here](https://futit.github.io/obrest)
+
+## Previous configuration
+
+You need to set the npm registry and your username and password(base64, username:password) in your ~/.npmrc file.
+
+```
+registry=https://repo.futit.cloud/repository/npm-group/
+_auth=dXNlcm5hbWU6cGFzc3dvcmQK
+```
+
+## Run tests
+
+It's important to run tests before making changes in the openbravo module.
+
+```
+$ yarn test
+```
+
+## Release to nexus
+
+You should increment the version number of the package.json file and run the following commands.
+
+```
+$ yarn build
+$ npm publish
+```
+
+The repository authentication data is available in the **.npmrc** file at the root of the project.
 
 ## Examples
 
@@ -102,8 +130,4 @@ let refreshedProductList = await OBRest.getInstance().removeList([
 ```
 
 *It is always better to remove lists than individual objects* 
-
-## To run tests
-
-```yarn test```
 
