@@ -23,7 +23,6 @@ export default class OBRest {
             headers: jwtToken ? {
                 'Authorization': `Bearer ${jwtToken}`
             } : {},
-            adapter: require('axios/lib/adapters/http')
         });
 
         if (jwtToken) {
