@@ -21,8 +21,14 @@ export default class OBCriteria {
     /** Order by string parameter */
     private _orderBy;
     /** Rsql query */
-    _query: string;
+    private _query;
+    /** Show identifiers */
+    private _showIdentifiers;
+    /** Show identifiers */
+    private _fields;
     constructor(axios: AxiosInstance, restWsName: string, entityName: string);
+    setShowIdentifiers(value: boolean): void;
+    setFields(value: Array<string>): void;
     /** Sets the max results */
     setMaxResults(maxResults: number): void;
     /** WARNING: This method empties the _restrictions object */

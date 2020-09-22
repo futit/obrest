@@ -12,11 +12,16 @@ export default class OBRest {
     /** The Axios instance, contains the jwtToken */
     private axios: AxiosInstance;
 
+    /** The data web service name */
+    private wsName: string;
+
     /** The context, contains all jwtToken variables */
     private context: OBContext | undefined;
     private eventCallback: (status: number) => void;
 
     private constructor(url: URL, jwtToken?: string) {
+        this.wsName = "com.smf.securewebservices.obRest";
+
         // create axios instance, if token provided, login.
         this.axios = Axios.create({
             baseURL: url.href + "/sws/",
@@ -43,7 +48,7 @@ export default class OBRest {
 
     /** Create a criteria with the enviroment configuration */
     public createCriteria(entityName: string): OBCriteria {
-        return new OBCriteria(this.axios, "com.smf.securewebservices.obRest", entityName);
+        return new OBCriteria(this.axios, this.wsName, entityName);
     }
 
     /** Save a single record */
@@ -64,7 +69,7 @@ export default class OBRest {
     private async _save(entityName: string, data: Array<OBObject>): Promise<Array<OBObject> | undefined> {
         const response = (await this.axios.request({
             method: 'POST',
-            url: `com.smf.securewebservices.obRest/${entityName}`,
+            url: `${this.wsName}/${entityName}`,
             data: { data }
         }));
         if (response.data) {
@@ -94,7 +99,7 @@ export default class OBRest {
     private async _remove(entityName: string, data: Array<OBObject>): Promise<Array<OBObject> | undefined> {
         const response = (await this.axios.request({
             method: 'DELETE',
-            url: `com.smf.securewebservices.obRest/${entityName}`,
+            url: `${this.wsName}/${entityName}`,
             data: {
                 data: data.map(obj => obj.id)
             }
@@ -139,7 +144,7 @@ export default class OBRest {
     public async callWebService(name: string, method: Method, params: Array<any>, data: object): Promise<any> {
         const response = (await this.axios.request({
             method,
-            url:name,
+            url: name,
             data
         }));
         return response.data

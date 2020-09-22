@@ -31,8 +31,13 @@ export default class OBCriteria {
     private _orderBy: string;
 
     /** Rsql query */
-    public _query: string;
+    private _query: string;
 
+    /** Show identifiers */
+    private _showIdentifiers: boolean;
+
+    /** Show identifiers */
+    private _fields: Array<string>;
 
     constructor(axios: AxiosInstance, restWsName: string, entityName: string) {
         this._axios = axios;
@@ -43,7 +48,16 @@ export default class OBCriteria {
         this._firstResult = 0;
         this._orderBy = "";
         this._query = "";
+        this._showIdentifiers = false;
+        this._fields = [];
+    }
 
+    setShowIdentifiers(value:boolean){
+        this._showIdentifiers = value;
+    }
+
+    setFields(value:Array<string>){
+        this._fields = value;
     }
 
     /** Sets the max results */
@@ -94,12 +108,14 @@ export default class OBCriteria {
                 firstResult: this._firstResult,
                 maxResults: this._maxResults,
                 q: this._query,
+                identifiers:this._showIdentifiers,
+                ...(this._fields.length > 0 ? {fields:this._fields.join(",")} : {}),
             }
         }));
 
-        if(request.data && request.data.data){
+        if (request.data && request.data.data) {
             return request.data.data;
-        }else{
+        } else {
             //TODO: error?
             return new Array<OBObject>();
         }

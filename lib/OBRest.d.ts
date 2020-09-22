@@ -10,6 +10,8 @@ export default class OBRest {
     private static instance;
     /** The Axios instance, contains the jwtToken */
     private axios;
+    /** The data web service name */
+    private wsName;
     /** The context, contains all jwtToken variables */
     private context;
     private eventCallback;
