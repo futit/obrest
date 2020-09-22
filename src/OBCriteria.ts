@@ -52,41 +52,47 @@ export default class OBCriteria {
         this._fields = [];
     }
 
-    setShowIdentifiers(value:boolean){
+    setShowIdentifiers(value: boolean): OBCriteria {
         this._showIdentifiers = value;
+        return this;
     }
 
-    setFields(value:Array<string>){
+    setFields(value: Array<string>): OBCriteria {
         this._fields = value;
+        return this;
     }
 
     /** Sets the max results */
-    setMaxResults(maxResults: number) {
+    setMaxResults(maxResults: number): OBCriteria {
         this._maxResults = maxResults;
+        return this;
     }
 
     /** WARNING: This method empties the _restrictions object */
-    setQuery(rsqlQuery: string) {
+    setQuery(rsqlQuery: string): OBCriteria {
         this._query = rsqlQuery;
         this._restrictions = new Array<Criterion>();
+        return this;
     }
 
     /** Sets the first result */
-    setFirstResult(firstResult: number) {
+    setFirstResult(firstResult: number): OBCriteria {
         this._firstResult = firstResult;
+        return this;
     }
 
     /** 
      * Add a restriction to the criteria, you must use the Restrictions methods,
      * WARNING: This method reset the _query object 
      */
-    add(restriction: Criterion) {
+    add(restriction: Criterion): OBCriteria {
         this._restrictions.push(restriction);
         this._query = OBRestUtils.criteriaToRsql(Restrictions.and(this._restrictions));
+        return this;
     }
 
     /** Add order by to the criteria */
-    addOrderBy(property: string, ascending: boolean) {
+    addOrderBy(property: string, ascending: boolean): OBCriteria {
         if (this._orderBy.length > 0) {
             this._orderBy += ", ";
         }
@@ -94,6 +100,7 @@ export default class OBCriteria {
             this._orderBy += "-";
         }
         this._orderBy += property;
+        return this;
     }
 
 
@@ -108,8 +115,8 @@ export default class OBCriteria {
                 firstResult: this._firstResult,
                 maxResults: this._maxResults,
                 q: this._query,
-                identifiers:this._showIdentifiers,
-                ...(this._fields.length > 0 ? {fields:this._fields.join(",")} : {}),
+                identifiers: this._showIdentifiers,
+                ...(this._fields.length > 0 ? { fields: this._fields.join(",") } : {}),
             }
         }));
 

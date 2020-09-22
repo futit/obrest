@@ -27,21 +27,21 @@ export default class OBCriteria {
     /** Show identifiers */
     private _fields;
     constructor(axios: AxiosInstance, restWsName: string, entityName: string);
-    setShowIdentifiers(value: boolean): void;
-    setFields(value: Array<string>): void;
+    setShowIdentifiers(value: boolean): OBCriteria;
+    setFields(value: Array<string>): OBCriteria;
     /** Sets the max results */
-    setMaxResults(maxResults: number): void;
+    setMaxResults(maxResults: number): OBCriteria;
     /** WARNING: This method empties the _restrictions object */
-    setQuery(rsqlQuery: string): void;
+    setQuery(rsqlQuery: string): OBCriteria;
     /** Sets the first result */
-    setFirstResult(firstResult: number): void;
+    setFirstResult(firstResult: number): OBCriteria;
     /**
      * Add a restriction to the criteria, you must use the Restrictions methods,
      * WARNING: This method reset the _query object
      */
-    add(restriction: Criterion): void;
+    add(restriction: Criterion): OBCriteria;
     /** Add order by to the criteria */
-    addOrderBy(property: string, ascending: boolean): void;
+    addOrderBy(property: string, ascending: boolean): OBCriteria;
     list(): Promise<Array<OBObject>>;
     uniqueResult(): Promise<OBObject | undefined>;
 }
