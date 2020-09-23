@@ -160,6 +160,9 @@ export default class OBRest {
             username: username,
             password: password,
         });
+        if(response.data.status === "error"){
+            throw new Error(response.data.message)
+        }
         let jwtToken = response.data?.token;
         OBRest.loginWithToken(jwtToken);
     }
