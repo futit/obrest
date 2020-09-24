@@ -67,19 +67,21 @@ export default class OBRest {
     }
 
     private async _save(entityName: string, data: Array<OBObject>): Promise<Array<OBObject> | undefined> {
-        const response = (await this.axios.request({
-            method: 'POST',
-            url: `${this.wsName}/${entityName}`,
-            data: { data }
-        }));
-        if (response.data) {
-            if (response.status >= 200 && response.status < 300) {
+        try {
+            const response = await this.axios.request({
+                method: 'POST',
+                url: `${this.wsName}/${entityName}`,
+                data: { data }
+            })
+            if (response?.data) {
                 return response.data.data;
-            } else if (response.status < 200 || response.status >= 300) {
-                throw new Error(response.data.message);
+            }
+            return undefined;
+        } catch (error) {
+            if (error?.response?.data?.message) {
+                throw new Error(error.response.data.message);
             }
         }
-        return undefined;
     }
     /** Remove a single record */
     public async remove(object: OBObject): Promise<OBObject | undefined> {
@@ -97,21 +99,23 @@ export default class OBRest {
     }
 
     private async _remove(entityName: string, data: Array<OBObject>): Promise<Array<OBObject> | undefined> {
-        const response = (await this.axios.request({
-            method: 'DELETE',
-            url: `${this.wsName}/${entityName}`,
-            data: {
-                data: data.map(obj => obj.id)
-            }
-        }));
-        if (response.data) {
-            if (response.status >= 200 && response.status < 300) {
+        try {
+            const response = await this.axios.request({
+                method: 'DELETE',
+                url: `${this.wsName}/${entityName}`,
+                data: {
+                    data: data.map(obj => obj.id)
+                }
+            });
+            if (response?.data) {
                 return response.data.data;
-            } else if (response.status < 200 || response.status >= 300) {
-                throw new Error(response.data.message);
+            }
+            return undefined;
+        } catch (error) {
+            if (error?.response?.data?.message) {
+                throw new Error(error.response.data.message);
             }
         }
-        return undefined;
     }
 
     /** Return the axios instance */
@@ -160,7 +164,7 @@ export default class OBRest {
             username: username,
             password: password,
         });
-        if(response.data.status === "error"){
+        if (response.data.status === "error") {
             throw new Error(response.data.message)
         }
         let jwtToken = response.data?.token;
