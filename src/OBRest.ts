@@ -17,7 +17,6 @@ export default class OBRest {
 
     /** The context, contains all jwtToken variables */
     private context: OBContext | undefined;
-    private eventCallback: (status: number) => void;
 
     private constructor(url: URL, jwtToken?: string) {
         this.wsName = "com.smf.securewebservices.obRest";
@@ -33,17 +32,6 @@ export default class OBRest {
         if (jwtToken) {
             this.context = OBContext.byJwtToken(jwtToken);
         }
-
-        // create dummy event handler
-        this.eventCallback = (status) => {
-            console.warn(`request failed (error ${status})`)
-        };
-
-        //interceptor for server errors.
-        this.axios.interceptors.response.use((response) => response, (error) => {
-            const { status } = error.response;
-            this.eventCallback(error);
-        })
     }
 
     /** Create a criteria with the enviroment configuration */
@@ -68,14 +56,14 @@ export default class OBRest {
 
     private async _save(entityName: string, data: Array<OBObject>): Promise<Array<OBObject> | undefined> {
         try {
-            const response = await this.axios.request({
+            this.axios.request({
                 method: 'POST',
                 url: `${this.wsName}/${entityName}`,
                 data: { data }
-            })
-            if (response?.data) {
+            }).then(e => console.log(e)).catch(e => console.log(e));
+            /*if (response?.data) {
                 return response.data.data;
-            }
+            }*/
             return undefined;
         } catch (error) {
             if (error?.response?.data?.message) {
@@ -138,11 +126,6 @@ export default class OBRest {
         });
         let jwtToken = response.data?.token;
         OBRest.loginWithToken(jwtToken);
-    }
-
-    /** set the events callback to use it with mobx/redux */
-    public setEventCallback(callback: (status: number) => void) {
-        this.eventCallback = callback;
     }
 
     public async callWebService(name: string, method: Method, params: Array<any>, data: object): Promise<any> {

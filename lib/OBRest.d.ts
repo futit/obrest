@@ -14,7 +14,6 @@ export default class OBRest {
     private wsName;
     /** The context, contains all jwtToken variables */
     private context;
-    private eventCallback;
     private constructor();
     /** Create a criteria with the enviroment configuration */
     createCriteria(entityName: string): OBCriteria;
@@ -34,8 +33,6 @@ export default class OBRest {
     getOBContext(): OBContext | undefined;
     /** Async function to set the context and refreshg the token */
     setOBContext(context: OBContext): Promise<void>;
-    /** set the events callback to use it with mobx/redux */
-    setEventCallback(callback: (status: number) => void): void;
     callWebService(name: string, method: Method, params: Array<any>, data: object): Promise<any>;
     /** Initializes the conection with rest api */
     static init(url: URL, jwtToken?: string): void;
