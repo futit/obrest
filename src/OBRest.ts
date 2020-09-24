@@ -56,14 +56,14 @@ export default class OBRest {
 
     private async _save(entityName: string, data: Array<OBObject>): Promise<Array<OBObject> | undefined> {
         try {
-            this.axios.request({
+            const response = await this.axios.request({
                 method: 'POST',
                 url: `${this.wsName}/${entityName}`,
                 data: { data }
-            }).then(e => console.log(e)).catch(e => console.log(e));
-            /*if (response?.data) {
+            });
+            if (response?.data) {
                 return response.data.data;
-            }*/
+            }
             return undefined;
         } catch (error) {
             if (error?.response?.data?.message) {
