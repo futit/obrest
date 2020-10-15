@@ -94,7 +94,7 @@ export default class OBCriteria {
     /** Add order by to the criteria */
     addOrderBy(property: string, ascending: boolean): OBCriteria {
         if (this._orderBy.length > 0) {
-            this._orderBy += ", ";
+            this._orderBy += ",";
         }
         if (!ascending) {
             this._orderBy += "-";
