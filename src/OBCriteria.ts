@@ -33,6 +33,9 @@ export default class OBCriteria {
     /** Rsql query */
     private _query: string;
 
+    /** Distinct parameter */
+    private _distinct: string;
+
     /** Show identifiers */
     private _showIdentifiers: boolean;
 
@@ -50,6 +53,7 @@ export default class OBCriteria {
         this._query = "";
         this._showIdentifiers = false;
         this._fields = [];
+        this._distinct = "";
     }
 
     setShowIdentifiers(value: boolean): OBCriteria {
@@ -78,6 +82,12 @@ export default class OBCriteria {
     /** Sets the first result */
     setFirstResult(firstResult: number): OBCriteria {
         this._firstResult = firstResult;
+        return this;
+    }
+
+    /** Sets the first result */
+    setDistinct(distinct: string): OBCriteria {
+        this._distinct = distinct;
         return this;
     }
 
@@ -117,6 +127,8 @@ export default class OBCriteria {
                 q: this._query,
                 identifiers: this._showIdentifiers,
                 ...(this._fields.length > 0 ? { fields: this._fields.join(",") } : {}),
+                ...(this._distinct ? { distinct: this._distinct } : {}),
+
             }
         }));
 

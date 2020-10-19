@@ -22,6 +22,8 @@ export default class OBCriteria {
     private _orderBy;
     /** Rsql query */
     private _query;
+    /** Distinct parameter */
+    private _distinct;
     /** Show identifiers */
     private _showIdentifiers;
     /** Show identifiers */
@@ -35,6 +37,8 @@ export default class OBCriteria {
     setQuery(rsqlQuery: string): OBCriteria;
     /** Sets the first result */
     setFirstResult(firstResult: number): OBCriteria;
+    /** Sets the first result */
+    setDistinct(distinct: string): OBCriteria;
     /**
      * Add a restriction to the criteria, you must use the Restrictions methods,
      * WARNING: This method reset the _query object
