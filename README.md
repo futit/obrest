@@ -37,7 +37,7 @@ The repository authentication data is available in the **.npmrc** file at the ro
 ### Initialize app
 
 ```jsx
-import OBRest from 'obrest';
+import { OBRest } from 'obrest';
 
 OBRest.init("http://localhost:8080");
 ```
