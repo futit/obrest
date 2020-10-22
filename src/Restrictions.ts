@@ -303,5 +303,21 @@ export default class Restrictions{
             operator: 'equals',
             value
         }
+    }        
+
+    public static isNull(property: string):Criterion{
+        return {
+            fieldName: property,
+            operator: 'isNull',
+            value:"null"
+        }
+    }       
+
+    public static isNotNull(property: string):Criterion{
+        return {
+            fieldName: property,
+            operator: 'notNull',
+            value:"null"
+        }
     }    
 }

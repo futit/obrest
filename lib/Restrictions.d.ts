@@ -44,4 +44,6 @@ export default class Restrictions {
     static greaterThan(property: string, value: string): Criterion;
     static greaterOrEqual(property: string, value: string): Criterion;
     static equals(property: string, value: string): Criterion;
+    static isNull(property: string): Criterion;
+    static isNotNull(property: string): Criterion;
 }

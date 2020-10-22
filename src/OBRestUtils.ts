@@ -35,9 +35,9 @@ export default class OBRestUtils {
         { "symbol": "=nef=", "name": "notEqualField" },
         { "symbol": "=new=", "name": "notEndsWith" },
         { "symbol": "=nis=", "name": "notInSet" },
-        //{ "symbol": "=nnull=", "name": "notNull" }, UNINPLEMENTED se podría usar un operador =is= null o  =isnot= null
+        { "symbol": "=isnot=", "name": "notNull" },
         { "symbol": "=nsw=", "name": "notStartsWith" },
-        //{ "symbol": "=null=", "name": "isNull" }, UNINPLEMENTED
+        { "symbol": "=is=", "name": "isNull" }, 
         { "symbol": "=sw=", "name": "startsWith" },
         { "symbol": "=swf=", "name": "startsWithField" },
         { "symbol": ">", "name": "greaterThan" },
